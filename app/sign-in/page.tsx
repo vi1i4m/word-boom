@@ -11,18 +11,25 @@ export default function SignInPage() {
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try{
-        const res = signInWithEmailAndPassword(email, password);
-        console.log(res);
+    try {
+      const res = await signInWithEmailAndPassword(email, password);
+      
+      if (res && res.user) {
+        sessionStorage.setItem("user", JSON.stringify(true)); // nebo rovnou user.uid
+        console.log("Signed in:", res.user);
         setEmail("");
         setPassword("");
-        router.push("/"); // Redirect to home page after successful sign-in
-    } catch(err){
-        console.error(err);
+        router.push("/"); // Přesměrování až po úspěšném přihlášení
+      } else {
+        console.warn("Sign-in failed: no user returned.");
+      }
+    } catch (err) {
+      console.error("Sign-in error:", err);
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 p-4">
