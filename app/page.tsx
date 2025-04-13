@@ -4,19 +4,20 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config"; // Adjust the import path as necessary
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const [user] = useAuthState(auth);
   const router = useRouter();
-  const userSession = sessionStorage.getItem("user");
+  //const userSession = sessionStorage.getItem("user");
 
   useEffect(() => {
-    if (!user || !userSession) {
+    if (!user) {
       router.push("/sign-up");
     }
-  }, [user, userSession, router]);
+  }, [user, router]);
 
-  if (!user || !userSession) {
+  if (!user){
     return null; // or a loading spinner
   }
 
@@ -28,9 +29,11 @@ export default function Home() {
 <button onClick={() => {
   auth.signOut()
   sessionStorage.removeItem("user")
-}} className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]">
+}} className="cursor-pointer rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]">
   Log out
 </button>
+
+<Link className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]" href="/game-demo">Start Game</Link>
 
         <Image
           className="dark:invert"
