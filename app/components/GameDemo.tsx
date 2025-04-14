@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 
-const prefixes = ['un', 'pre', 're', 'dis', 'in', 'over', 'ex', 'co', 'sub', 'anti'];
-const suffixes = ['ing', 'able', 'ful', 'less', 'ness', 'tion', 'ment', 'ity', 'ous', 'ly'];
+const prefixes = ['un', 'pre', 're', 'dis', 'in', 'over', 'ex', 'co', 'sub', 'anti', 'bo'];
+const suffixes = ['ing', 'able', 'ful', 'less', 'ness', 'tion', 'ment', 'ity', 'ous', 'ly', 'ear'];
 
 const commonEnglishWords = [
   'able', 'about', 'across', 'after', 'against', 'along', 'among', 'around', 'before', 'behind',
@@ -148,13 +148,19 @@ export default function GameDemo() {
   };
   
   const loseLife = () => {
+    // Clear the existing timer first to prevent multiple calls
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    
     setLives(prev => {
       const newLives = prev - 1;
       if (newLives <= 0) {
         endGame();
         return 0;
       } else {
-        generateNewAffix();
+        setTimeout(() => generateNewAffix(), 0);
         return newLives;
       }
     });
